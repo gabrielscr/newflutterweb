@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:newflutterproject/common/api-service.dart';
 import 'package:newflutterproject/domain/user.dart';
+import 'package:newflutterproject/pages/user/user-edit.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -33,15 +34,23 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Usuários'),
-      ),
+        appBar: AppBar(
+          title: Text('Usuários'),
+        ),
         body: ListView.builder(
-      itemCount: users.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-            leading: Icon(Icons.person), title: Text(users[index].name));
-      },
-    ));
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Icon(Icons.person),
+              title: Text(users[index].name),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UserEdit(user: users[index])));
+              },
+            );
+          },
+        ));
   }
 }
