@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newflutterproject/pages/home/home-page.dart';
 import 'package:newflutterproject/pages/user/user-page.dart';
 
 void main() => runApp(MyApp());
@@ -12,41 +13,50 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: MenuPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class MenuPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _MenuPageState createState() => _MenuPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Study'),
+        title: Text('Início'),
         centerTitle: true,
       ),
       drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              DrawerHeader(
-                child: Text('MENU'),
-                decoration: BoxDecoration(color: Colors.blue),
-              ),
-              ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Usuários'),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => UserPage()));
-                },
-              ),
-            ],
-          ),
+        child: ListView(
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('MENU'),
+              decoration: BoxDecoration(color: Colors.blue),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Início'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Usuários'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserPage()));
+              },
+            ),
+          ],
         ),
+      ),
     );
   }
 }

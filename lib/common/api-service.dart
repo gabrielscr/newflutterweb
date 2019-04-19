@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
-const baseUrl = "https://2216e81a.ngrok.io";
+const baseUrl = "https://734d63f9.ngrok.io";
 
 class ApiService {
   static Future httpGet(String entity) {
