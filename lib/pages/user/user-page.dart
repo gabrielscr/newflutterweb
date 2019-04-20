@@ -49,7 +49,7 @@ class _UserPageState extends State<UserPage> {
               return new Dismissible(
                 key: new Key(users[index].name),
                 onDismissed: (direction) {
-                  users.removeAt(index);
+                  excluir(users[index].id);
                   Scaffold.of(context).showSnackBar(new SnackBar(
                     content: new Text('Usuário deletado'),
                   ));
@@ -76,17 +76,21 @@ class _UserPageState extends State<UserPage> {
             },
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: (){
-              Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  UserInsert()));
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserInsert()));
             },
             child: Icon(Icons.add),
           ),
         ),
       ),
     );
+  }
+
+  void excluir(int id) {
+    
+    ApiService apiService = new ApiService();
+
+    apiService.delete('/api/person/delete', id);
   }
 }

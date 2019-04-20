@@ -9,6 +9,7 @@ class UserInsert extends StatefulWidget {
 
 class _UserInsertState extends State<UserInsert> {
   User user = new User();
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
@@ -21,47 +22,67 @@ class _UserInsertState extends State<UserInsert> {
       appBar: AppBar(
         title: Text('Inserir usuário'),
       ),
-      body: new SafeArea(
-        top: false,
-        bottom: false,
-        child: Form(
-          key: _formKey,
-          autovalidate: true,
-          child: new ListView(
-            children: <Widget>[
-              new TextField(
-                keyboardType: TextInputType.text,
-                decoration: new InputDecoration(
-                    labelText: 'Nome', icon: Icon(Icons.person)),
-                onChanged: (v) => user.name = v,
-              ),
-              new TextField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: new InputDecoration(
-                    labelText: 'E-mail', icon: Icon(Icons.email)),
-                onChanged: (v) => user.email = v,
-              ),
-              new TextField(
-                keyboardType: TextInputType.datetime,
-                decoration: new InputDecoration(
-                    labelText: 'Data de nascimento',
-                    icon: Icon(Icons.date_range)),
-                onChanged: (v) => user.birthdate = v,
-              ),
-              new Container(
-                width: screenSize.width,
-                child: new RaisedButton(
-                  child: new Text(
-                    'Inserir',
-                    style: new TextStyle(color: Colors.white),
-                  ),
-                  onPressed: this.submit,
-                  color: Colors.blue,
+      body: Form(
+        key: _formKey,
+        autovalidate: true,
+        child: new ListView(
+          children: <Widget>[
+            new TextField(
+              keyboardType: TextInputType.text,
+              decoration: new InputDecoration(
+                  hintText: 'Qual o seu nome?',
+                  labelText: 'Nome',
+                  icon: Icon(Icons.person)),
+              onChanged: (v) => user.name = v,
+            ),
+            new TextField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: new InputDecoration(
+                  hintText: 'Qual o seu e-mail?',
+                  labelText: 'E-mail',
+                  icon: Icon(Icons.email)),
+              onChanged: (v) => user.email = v,
+            ),
+            new TextField(
+              keyboardType: TextInputType.datetime,
+              decoration: new InputDecoration(
+                  hintText: 'Qual sua data de nascimento?',
+                  labelText: 'Data de nascimento',
+                  icon: Icon(Icons.date_range)),
+              onChanged: (v) => user.birthdate = v,
+            ),
+            new TextField(
+              keyboardType: TextInputType.number,
+              decoration: new InputDecoration(
+                  labelText: 'Salário',
+                  prefixText: 'R\$',
+                  suffixText: 'Reais',
+                  suffixStyle: TextStyle(color: Colors.green),
+                  icon: Icon(Icons.attach_money)),
+              onChanged: (v) => user.salary = v,
+            ),
+            Divider(),
+            CheckboxListTile(
+              title: Text('Casado(a)?'),
+              onChanged: (bool value){
+                setState(() => user.isMarried = value,
+                );
+              },
+              value: user.isMarried,
+            ),
+            new Container(
+              width: screenSize.width,
+              child: new RaisedButton(
+                child: new Text(
+                  'Inserir',
+                  style: new TextStyle(color: Colors.white),
                 ),
-                margin: new EdgeInsets.only(top: 20.0),
-              )
-            ],
-          ),
+                onPressed: this.submit,
+                color: Colors.blue,
+              ),
+              margin: new EdgeInsets.only(top: 20.0),
+            )
+          ],
         ),
       ),
     );

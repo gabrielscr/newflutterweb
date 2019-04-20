@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newflutterproject/common/api-service.dart';
 import 'package:newflutterproject/domain/user.dart';
 
 class UserEdit extends StatelessWidget {
@@ -6,6 +7,7 @@ class UserEdit extends StatelessWidget {
 
   UserEdit({Key key, @required this.user}) : super(key: key);
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
@@ -13,32 +15,36 @@ class UserEdit extends StatelessWidget {
     final Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Editar usuário'),
       ),
-      body: new Container(
-        padding: EdgeInsets.all(20.0),
-        child: new Form(
-          key: this._formKey,
+      body: new SafeArea(
+        top: false,
+        bottom: false,
+        child: Form(
+          key: _formKey,
+          autovalidate: true,
           child: new ListView(
             children: <Widget>[
-              new TextFormField(
+              new TextField(
                 keyboardType: TextInputType.text,
-                decoration: new InputDecoration(labelText: 'Nome'),
-                onSaved: (String value) {
-                  this.user.name = value;
-                },
+                decoration: new InputDecoration(
+                    labelText: 'Nome', icon: Icon(Icons.person)),
+                onChanged: (v) => user.name = v,
               ),
-              new TextFormField(
-                keyboardType: TextInputType.text,
-                decoration: new InputDecoration(labelText: 'E-mail'),
-                onSaved: (String value) {
-                  this.user.email = value;
-                },
+              new TextField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: new InputDecoration(
+                    labelText: 'E-mail', icon: Icon(Icons.email)),
+                onChanged: (v) => user.email = v,
               ),
-              new TextFormField(
+              new TextField(
                 keyboardType: TextInputType.datetime,
-                decoration: new InputDecoration(labelText: 'Data de nascimento'),
+                decoration: new InputDecoration(
+                    labelText: 'Data de nascimento',
+                    icon: Icon(Icons.date_range)),
+                onChanged: (v) => user.birthdate = v,
               ),
               new Container(
                 width: screenSize.width,
@@ -60,6 +66,10 @@ class UserEdit extends StatelessWidget {
   }
 
   void submit() {
-    //ApiService().post('/api/person/insert', )
+    var apiService = new ApiService();
+
+    apiService.put('/api/person/edit', user);
+
+    print(user.toJson());
   }
 }
