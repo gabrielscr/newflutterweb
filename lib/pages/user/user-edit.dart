@@ -25,7 +25,6 @@ class UserEdit extends StatelessWidget {
             children: <Widget>[
               new TextFormField(
                 keyboardType: TextInputType.text,
-                controller: TextEditingController(text: user.name),
                 decoration: new InputDecoration(labelText: 'Nome'),
                 onSaved: (String value) {
                   this.user.name = value;
@@ -33,10 +32,16 @@ class UserEdit extends StatelessWidget {
               ),
               new TextFormField(
                 keyboardType: TextInputType.text,
-                controller: TextEditingController(text: user.email),
                 decoration: new InputDecoration(labelText: 'E-mail'),
                 onSaved: (String value) {
                   this.user.email = value;
+                },
+              ),
+              new TextFormField(
+                keyboardType: TextInputType.datetime,
+                decoration: new InputDecoration(labelText: 'Data de nascimento'),
+                onSaved: (String value) {
+                  this.user.birthdate = value;
                 },
               ),
               new Container(
@@ -59,9 +64,6 @@ class UserEdit extends StatelessWidget {
   }
 
   void submit() {
-    // First validate form
-    _formKey.currentState.save(); // Save our form now.
-
-    ApiService.editar("person", this.user.id);
+    //ApiService().post('/api/person/insert', )
   }
 }

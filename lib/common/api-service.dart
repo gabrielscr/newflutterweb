@@ -1,31 +1,61 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-const baseUrl = "https://dfb092f4.ngrok.io";
-
 class ApiService {
-  static Future obter(String controller, int id) {
-    var url = baseUrl + "/api/" + controller + "/get/" + id.toString();
-    return http.get(url);
+  final String api = '3c49143a.ngrok.io';
+  final client = http.Client();
+
+  get(String url, Map query) async {
+    url += _getUrlQuery(query);
+
+    var response = await client.get(_getApiUrl(url), headers: _getHeaders()); 
+
+    return response.body;
   }
 
-  static Future listar(String controller) {
-    var url = baseUrl + "/api/" + controller + "/list?pageIndex=1&pageSize=5000";
-    return http.get(url, headers: _getHeaders());
+  post(String url, Map body) async {
+    var response = await client.post(_getApiUrl(url), body: jsonEncode(body), headers: _getHeaders());
+    
+    return response.body;
   }
 
-    static Future editar(String controller, int id) {
-    var url = baseUrl + "/api/" + controller + "/edit/" + id.toString();
-    return http.put(url, body: jsonEncode(id), headers: _getHeaders());
+  put(String url, Map body) async {
+    var response = await client.put(_getApiUrl(url), body: jsonEncode(body), headers: _getHeaders());
+
+    return response.body;
   }
 
-  static Future excluir(String controller, int id) {
-    var url = baseUrl + "/api/" + controller + "/delete/" + id.toString();
-    return http.delete(url);
+  delete(String url, Map body) async {
+    url += _getUrlQuery(body);
+
+    var response = await client.delete(_getApiUrl(url), headers: _getHeaders());
+
+    return response.body;
   }
 
-   static _getHeaders() {
+  _getHeaders() {
     return { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+  }
+
+  _getUrlQuery(Map query) {
+    var queryUrl = '';
+
+    for (var item in query.keys) {
+      if (item == null)
+        continue;
+
+      if (queryUrl.indexOf('?') < 0)
+        queryUrl += '?';
+      else
+        queryUrl += '&';
+
+      queryUrl += item + '=' + query[item].toString();
+    }
+
+    return queryUrl;
+  }
+
+  String _getApiUrl(String url) {
+    return Uri.decodeFull(Uri.https(api, url).toString());
   }
 }

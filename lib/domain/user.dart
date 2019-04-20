@@ -4,20 +4,18 @@ class User {
   String birthdate;
   String email;
 
-  User(int id, String name, String email, String birthdate) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.birthdate = birthdate;
-  }
+  User(this.name, this.email, this.birthdate, this.id);
 
-  User.fromJson(Map json)
-      : id = json['id'],
-        name = json['name'],
+  User.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        email = json['email'],
         birthdate = json['birthdate'],
-        email = json['email'];
+        id = json['id'];
 
-  Map toJson() {
-    return {'id': id, 'name': name, 'email': email, 'birthdate': birthdate};
-  }
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'email': email,
+        'birthdate': birthdate,
+        'id': id,
+      };
 }
