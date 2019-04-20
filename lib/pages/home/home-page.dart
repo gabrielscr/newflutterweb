@@ -8,39 +8,88 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Início'),
-            centerTitle: true,
-            bottom: TabBar(
-              tabs: <Widget>[
-                Tab(
-                  text: 'Início',
-                  icon: Icon(Icons.home),
+    return Scaffold(
+      body: GridView.count(
+        crossAxisCount: 2,
+        padding: EdgeInsets.all(16.0),
+        childAspectRatio: 8.0 / 9.0,
+        children: <Widget>[
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 18.0 / 11.0,
+                  child: Image.asset(
+                    'assets/img/semfoto.png',
+                    scale: 3,
+                    width: 10,
+                  ),
                 ),
-                Tab(
-                  text: 'Mensagens',
-                  icon: Icon(Icons.mail),
-                ),
-                Tab(
-                  text: 'Configurações',
-                  icon: Icon(Icons.settings),
-                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Produto 01'),
+                      SizedBox(height: 8.0),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
-          body: TabBarView(
-            children: <Widget>[
-              Text('TESTE', 
-              style: TextStyle(fontSize: 50)), 
-              Text('Teste2'), 
-              Text('Teste3')
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 18.0 / 11.0,
+                  child: Image.asset(
+                    'assets/img/semfoto.png',
+                    scale: 3,
+                    width: 10,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Produto 02'),
+                      SizedBox(height: 8.0),
+                    ],
+                  ),
+                )
               ],
+            ),
           ),
-        ),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 18.0 / 11.0,
+                  child: Image.asset(
+                    'assets/img/semfoto.png',
+                    scale: 3,
+                    width: 10,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text('Produto 03'),
+                      SizedBox(height: 8.0),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

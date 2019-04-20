@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:newflutterproject/login/login.dart';
 import 'package:newflutterproject/pages/home/home-page.dart';
-import 'package:newflutterproject/pages/user/user-page.dart';
+import 'package:newflutterproject/pages/menu.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,21 +10,21 @@ class MyApp extends StatelessWidget {
   build(context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'My Http App',
+      title: 'WeebzApp',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MenuPage(),
+      home: Login(),
     );
   }
 }
 
-class MenuPage extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _MenuPageState createState() => _MenuPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _MenuPageState extends State<MenuPage> {
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,32 +32,8 @@ class _MenuPageState extends State<MenuPage> {
         title: Text('Início'),
         centerTitle: true,
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('MENU'),
-              decoration: BoxDecoration(color: Colors.blue),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Início'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Usuários'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UserPage()));
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: Menu(),
+      body: HomePage(),
     );
   }
 }
