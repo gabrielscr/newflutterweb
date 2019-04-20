@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:newflutterproject/common/api-service.dart';
 import 'package:newflutterproject/domain/user.dart';
 
 class UserEdit extends StatelessWidget {
@@ -40,9 +39,6 @@ class UserEdit extends StatelessWidget {
               new TextFormField(
                 keyboardType: TextInputType.datetime,
                 decoration: new InputDecoration(labelText: 'Data de nascimento'),
-                onSaved: (String value) {
-                  this.user.birthdate = value;
-                },
               ),
               new Container(
                 width: screenSize.width,

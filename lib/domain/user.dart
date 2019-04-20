@@ -4,7 +4,7 @@ class User {
   String birthdate;
   String email;
 
-  User(this.name, this.email, this.birthdate, this.id);
+  User();
 
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],

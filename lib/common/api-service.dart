@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String api = '3c49143a.ngrok.io';
+  final String api = 'd9593f39.ngrok.io';
   final client = http.Client();
 
   get(String url, Map query) async {
@@ -13,9 +13,9 @@ class ApiService {
     return response.body;
   }
 
-  post(String url, Map body) async {
-    var response = await client.post(_getApiUrl(url), body: jsonEncode(body), headers: _getHeaders());
-    
+  Future post(String url, Object object) async {
+    var response = await client.post(_getApiUrl(url), body: json.encode(object), headers: _getHeaders());
+    print(response.body);
     return response.body;
   }
 
