@@ -14,11 +14,11 @@ class _LoginState extends State<Login> {
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            SizedBox(height: 100.0),
+            SizedBox(height: 200.0),
             Column(
               children: <Widget>[
                 SizedBox(height: 16.0),
-                Image.asset('assets/img/logo.png')
+
               ],
             ),
             SizedBox(height: 50.0),

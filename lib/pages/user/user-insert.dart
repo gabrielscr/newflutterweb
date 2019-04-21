@@ -62,12 +62,10 @@ class _UserInsertState extends State<UserInsert>
                           new Center(
                             child: new CircleAvatar(
                               radius: 80.0,
+                              backgroundImage:
+                                  AssetImage('assets/img/male.png'),
                               backgroundColor: const Color(0xFF778899),
                             ),
-                          ),
-                          new Center(
-                            child:
-                                new Image.asset("assets/img/semfotoperfil.png"),
                           ),
                         ],
                       )
@@ -111,15 +109,23 @@ class _UserInsertState extends State<UserInsert>
                   icon: Icon(Icons.date_range)),
               onChanged: (v) => user.birthdate = v,
             ),
+            Divider(),
             new TextField(
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               decoration: new InputDecoration(
-                  labelText: 'Salário',
-                  prefixText: 'R\$',
-                  suffixText: 'Reais',
-                  suffixStyle: TextStyle(color: Colors.green),
-                  icon: Icon(Icons.attach_money)),
-              onChanged: (v) => user.salary = v,
+                  hintText: 'Escolha um login para acessar o app',
+                  labelText: 'Login',
+                  icon: Icon(Icons.person_pin)),
+              onChanged: (v) => user.userName = v,
+            ),
+            new TextField(
+              keyboardType: TextInputType.text,
+              decoration: new InputDecoration(
+                  hintText: 'Escolha uma senha para acessar o app',
+                  labelText: 'Senha',
+                  icon: Icon(Icons.enhanced_encryption)),
+              onChanged: (v) => user.password = v,
+              obscureText: true,
             ),
             new Container(
               width: screenSize.width,
@@ -139,18 +145,20 @@ class _UserInsertState extends State<UserInsert>
     );
   }
 
+  @override
+  userImage(File _image) {
+    setState(() {
+      this._image = _image;
+
+      this.user.image = _image.path;
+    });
+  }
+
   void submit() {
     var apiService = new ApiService();
 
     apiService.post('/api/person/insert', user);
 
     print(user.toJson());
-  }
-
-  @override
-  userImage(File _image) {
-    setState(() {
-      this._image = _image;
-    });
   }
 }

@@ -58,6 +58,8 @@ flutter:
     - assets/img/semfotoperfil.png
     - assets/img/logo.png
     - assets/profile/profile.jpg
+    - assets/img/male.png
+    - assets/img/female.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

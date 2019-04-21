@@ -3,8 +3,9 @@ class User {
   String name;
   String birthdate;
   String email;
-  String salary;
-  bool isMarried = false;
+  String password;
+  String userName;
+  String image;
 
   User();
 
@@ -13,15 +14,17 @@ class User {
         email = json['email'],
         birthdate = json['birthdate'],
         id = json['id'],
-        salary = json['salary'],
-        isMarried = json['isMarried'];
+        password = json['password'],
+        userName = json['userName'],
+        image = json['image'];
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'email': email,
         'birthdate': birthdate,
         'id': id,
-        'salary': salary,
-        'isMarried': isMarried
+        'userName': userName,
+        'password': password,
+        'image': image
       };
 }

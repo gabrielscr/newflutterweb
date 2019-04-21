@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:newflutterproject/common/api-service.dart';
 import 'package:newflutterproject/domain/user.dart';
-import 'package:newflutterproject/pages/user/user-edit.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:newflutterproject/pages/user/user-edit.dart';
 import 'package:newflutterproject/pages/user/user-insert.dart';
+import 'package:newflutterproject/pages/user/user-service.dart';
 
 class UserPage extends StatefulWidget {
   @override
@@ -13,10 +13,10 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  var users = new List<User>();
+  var users = List<dynamic>();
 
   obterUsuarios() async {
-    var response = await ApiService().get(
+    var response = await UserService().get(
         'api/person/list', {'search': null, 'pageSize': 5000, 'pageIndex': 1});
 
     setState(() {
@@ -70,7 +70,7 @@ class _UserPageState extends State<UserPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  UserEdit(user: users[index])));
+                                  UserEdit(userId: users[index].id)));
                     }),
               );
             },
@@ -89,8 +89,8 @@ class _UserPageState extends State<UserPage> {
 
   void excluir(int id) {
     
-    ApiService apiService = new ApiService();
+    //ApiService apiService = new ApiService();
 
-    apiService.delete('/api/person/delete', id);
+    //apiService.delete('/api/person/delete', user);
   }
 }

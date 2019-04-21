@@ -1,75 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:newflutterproject/common/api-service.dart';
 import 'package:newflutterproject/domain/user.dart';
+import 'package:newflutterproject/pages/user/user-service.dart';
 
-class UserEdit extends StatelessWidget {
-  final User user;
+class UserEdit extends StatefulWidget {
+  final int userId;
 
-  UserEdit({Key key, @required this.user}) : super(key: key);
+  UserEdit({this.userId});
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  @override
+  _UserInsertEdit createState() => _UserInsertEdit(userId: this.userId);
+}
+
+class _UserInsertEdit extends State<UserEdit> {
+  final int userId;
+
+  var user = User();
+  // ToDo: do a better code to make generic to control all the input fields
+  var txtName = new TextEditingController();
+  var txtEmail = new TextEditingController();
+  var txtBirthDate = new TextEditingController();
+  var txtSalary = new TextEditingController();
+
+  _UserInsertEdit({this.userId});
+
+  getUser() async {
+    var userFromServer = new User();
+
+    if (userId != null) {
+      var response =
+          await UserService().get('/api/person/get', {'id': this.userId});
+          
+      userFromServer = User.fromJson(response);
+      txtName.text = userFromServer.name;
+      txtEmail.text = userFromServer.email;
+      txtBirthDate.text = userFromServer.birthdate;
+
+    }
+
+    setState(() {
+      user = userFromServer;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
+    var appBarText = this.userId == null ? 'Insert User' : 'Edit User';
 
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Editar usuário'),
+        title: Text(appBarText),
       ),
-      body: new SafeArea(
-        top: false,
-        bottom: false,
-        child: Form(
-          key: _formKey,
-          autovalidate: true,
-          child: new ListView(
-            children: <Widget>[
-              new TextField(
-                keyboardType: TextInputType.text,
-                decoration: new InputDecoration(
-                    labelText: 'Nome', icon: Icon(Icons.person)),
-                onChanged: (v) => user.name = v,
-              ),
-              new TextField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: new InputDecoration(
-                    labelText: 'E-mail', icon: Icon(Icons.email)),
-                onChanged: (v) => user.email = v,
-              ),
-              new TextField(
-                keyboardType: TextInputType.datetime,
-                decoration: new InputDecoration(
-                    labelText: 'Data de nascimento',
-                    icon: Icon(Icons.date_range)),
-                onChanged: (v) => user.birthdate = v,
-              ),
-              new Container(
-                width: screenSize.width,
-                child: new RaisedButton(
-                  child: new Text(
-                    'Editar',
-                    style: new TextStyle(color: Colors.white),
-                  ),
-                  onPressed: this.submit,
-                  color: Colors.blue,
-                ),
-                margin: new EdgeInsets.only(top: 20.0),
-              )
-            ],
-          ),
+      body: Form(
+        autovalidate: true,
+        child: ListView(
+          children: <Widget>[
+            new TextField(
+              controller: txtName,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  hintText: 'Type your full name',
+                  labelText: 'Name',
+                  icon: Icon(Icons.person)),
+              onChanged: (e) => user.name = e,
+            ),
+            new TextField(
+              controller: txtEmail,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                  hintText: 'Enter a valid email',
+                  labelText: 'Email',
+                  icon: Icon(Icons.email)),
+              onChanged: (e) => user.email = e,
+            ),
+            new TextField(
+              controller: txtBirthDate,
+              keyboardType: TextInputType.datetime,
+              decoration: InputDecoration(
+                  hintText: 'Enter your birth date',
+                  labelText: 'Birth date',
+                  icon: Icon(Icons.date_range)),
+              onChanged: (e) => user.birthdate = e,
+            ),
+            new TextField(
+              controller: txtEmail,
+              keyboardType: TextInputType.emailAddress,
+              decoration: new InputDecoration(
+                  labelText: 'Salário',
+                  prefixText: 'R\$',
+                  suffixText: 'Reais',
+                  suffixStyle: TextStyle(color: Colors.green),
+                  icon: Icon(Icons.attach_money)),
+              onChanged: (e) => user.email = e,
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  void submit() {
-    var apiService = new ApiService();
-
-    apiService.put('/api/person/edit', user);
-
-    print(user.toJson());
   }
 }

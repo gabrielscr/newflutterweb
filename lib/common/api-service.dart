@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String api = 'f9039ae7.ngrok.io';
+  final String api = '351bdb0b.ngrok.io';
   final client = http.Client();
 
   get(String url, Map query) async {
@@ -27,11 +27,12 @@ class ApiService {
     return response.body;
   }
 
-  delete(String url, int id) async {
-    var response = await client.delete(_getApiUrl(url + id.toString()),
-        headers: _getHeaders());
+  delete(String url, Map body) async {
+    url += _getUrlQuery(body);
 
-    return response.body;
+    var response = await client.delete(_getApiUrl(url), headers: _getHeaders());
+
+    return json.decode(response.body);
   }
 
   _getHeaders() {
