@@ -32,6 +32,9 @@ class ImagePickerHandler {
 
   Future cropImage(File image) async {
     File croppedFile = await ImageCropper.cropImage(
+      toolbarTitle: 'Editar foto',
+      toolbarColor: Colors.black,
+      circleShape: true,
       sourcePath: image.path,
       ratioX: 1.0,
       ratioY: 1.0,

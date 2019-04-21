@@ -78,19 +78,28 @@ class ImagePickerDialog extends StatelessWidget {
               children: <Widget>[
                 new GestureDetector(
                     onTap: () => _listener.openCamera(),
-                    child: roundedButton('Câmera', EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
-                        Colors.black, Colors.white)),
+                    child: roundedButton(
+                        'Câmera',
+                        EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
+                        Colors.black,
+                        Colors.white)),
                 new GestureDetector(
                     onTap: () => _listener.openGallery(),
-                    child: roundedButton('Galeria', EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
-                        Colors.black, Colors.white)),
+                    child: roundedButton(
+                        'Galeria',
+                        EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
+                        Colors.black,
+                        Colors.white)),
                 const SizedBox(height: 15.0),
                 new GestureDetector(
                   onTap: () => dismissDialog(),
                   child: new Padding(
                     padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-                    child: roundedButton('Voltar', EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
-                        Colors.black, Colors.white),
+                    child: roundedButton(
+                        'Voltar',
+                        EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
+                        Colors.black,
+                        Colors.white),
                   ),
                 ),
               ],
@@ -101,13 +110,13 @@ class ImagePickerDialog extends StatelessWidget {
 
   Widget roundedButton(
       String buttonLabel, EdgeInsets margin, Color bgColor, Color textColor) {
-    var loginBtn = new Container(
+    var button = new Container(
       margin: margin,
       padding: EdgeInsets.all(15.0),
       alignment: FractionalOffset.center,
       decoration: new BoxDecoration(
         color: bgColor,
-        borderRadius: new BorderRadius.all(const Radius.circular(100.0)),
+        borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: const Color(0xFF696969),
@@ -118,10 +127,9 @@ class ImagePickerDialog extends StatelessWidget {
       ),
       child: Text(
         buttonLabel,
-        style: new TextStyle(
-            color: textColor, fontSize: 20.0, fontWeight: FontWeight.bold),
+        style: new TextStyle(color: textColor, fontSize: 12.0),
       ),
     );
-    return loginBtn;
+    return button;
   }
 }

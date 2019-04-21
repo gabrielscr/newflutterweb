@@ -26,9 +26,8 @@ class _UserInsertState extends State<UserInsert>
       duration: const Duration(milliseconds: 500),
     );
 
-    imagePicker=new ImagePickerHandler(this,_controller);
+    imagePicker = new ImagePickerHandler(this, _controller);
     imagePicker.init();
-
   }
 
   @override
@@ -67,7 +66,8 @@ class _UserInsertState extends State<UserInsert>
                             ),
                           ),
                           new Center(
-                            child: new Image.asset("assets/img/semfotoperfil.png"),
+                            child:
+                                new Image.asset("assets/img/semfotoperfil.png"),
                           ),
                         ],
                       )
