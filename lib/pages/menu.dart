@@ -14,9 +14,12 @@ class _MenuState extends State<Menu> {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          DrawerHeader(
-            child: Text('MENU'),
-            decoration: BoxDecoration(color: Colors.blue),
+          UserAccountsDrawerHeader(
+            accountName: Text('Gabriel Rocha'),
+            accountEmail: Text('gabrielscrocha4@gmail.com'),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: AssetImage('assets/profile/profile.jpg'),
+            ),
           ),
           ListTile(
             leading: Icon(Boxicons.bxBox),
