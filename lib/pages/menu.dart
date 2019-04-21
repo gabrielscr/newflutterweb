@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:newflutterproject/pages/home/home-page.dart';
+import 'package:boxicons_flutter/boxicons_flutter.dart';
+import 'package:newflutterproject/pages/produto/produto-page.dart';
 import 'package:newflutterproject/pages/user/user-page.dart';
 
 class Menu extends StatefulWidget {
@@ -18,16 +19,43 @@ class _MenuState extends State<Menu> {
             decoration: BoxDecoration(color: Colors.blue),
           ),
           ListTile(
-            leading: Icon(Icons.phone_iphone),
-            title: Text('Início'),
+            leading: Icon(Boxicons.bxBox),
+            title: Text('Produtos'),
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProdutoPage()));
             },
           ),
           ListTile(
-            leading: Icon(Icons.person),
+            leading: Icon(Boxicons.bxPurchaseTag),
+            title: Text('Marcas'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProdutoPage()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Boxicons.bxTruck),
+            title: Text('Estoque'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProdutoPage()));
+            },
+          ),
+          Divider(
+            color: Colors.grey,
+          ),
+          ListTile(
+            leading: Icon(Boxicons.bxUser),
             title: Text('Usuários'),
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => UserPage()));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Configurações'),
             onTap: () {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => UserPage()));

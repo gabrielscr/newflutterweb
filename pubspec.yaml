@@ -31,6 +31,8 @@ dev_dependencies:
     sdk: flutter
   flutter_slidable: any
   async_loader: any
+  font_awesome_flutter: ^8.2.0
+  boxicons_flutter: any
 
 
   build_runner: ^1.0.0
@@ -54,6 +56,7 @@ flutter:
 
   assets:
     - assets/img/semfoto.png
+    - assets/img/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
