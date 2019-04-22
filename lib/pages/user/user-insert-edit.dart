@@ -1,18 +1,28 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:newflutterproject/common/api-service.dart';
 import 'package:newflutterproject/domain/user.dart';
 import 'package:newflutterproject/pages/image/image-handler.dart';
+import 'package:newflutterproject/pages/user/user-service.dart';
 
-class UserInsert extends StatefulWidget {
+class UserInsertEdit extends StatefulWidget {
+  final int userId;
+  UserInsertEdit({this.userId});
   @override
-  _UserInsertState createState() => _UserInsertState();
+  _UserInsertEdit createState() => _UserInsertEdit(userId: this.userId);
 }
 
-class _UserInsertState extends State<UserInsert>
+class _UserInsertEdit extends State<UserInsertEdit>
     with TickerProviderStateMixin, ImagePickerListener {
-  User user = new User();
+  final int userId;
+
+  var user = User();
+
+  var txtName = new TextEditingController();
+  var txtEmail = new TextEditingController();
+  var txtBirthDate = new TextEditingController();
+  var txtUserName = new TextEditingController();
+  var txtPassword = new TextEditingController();
 
   File _image;
   AnimationController _controller;
@@ -28,6 +38,7 @@ class _UserInsertState extends State<UserInsert>
 
     imagePicker = new ImagePickerHandler(this, _controller);
     imagePicker.init();
+    getUser();
   }
 
   @override
@@ -36,17 +47,41 @@ class _UserInsertState extends State<UserInsert>
     super.dispose();
   }
 
+  _UserInsertEdit({this.userId});
+
+  getUser() async {
+    var userFromServer = User();
+
+    if (userId != null) {
+      var response =
+          await UserService().get('/api/person/get', {'id': this.userId});
+      userFromServer = User.fromJson(response);
+      txtName.text = userFromServer.name;
+      txtEmail.text = userFromServer.email;
+      txtBirthDate.text = userFromServer.birthdate;
+      txtUserName.text = userFromServer.userName;
+      txtPassword.text = userFromServer.password;
+    }
+
+    setState(() {
+      user = userFromServer;
+    });
+  }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var appBarText = this.userId == null ? 'Inserir Usuário' : 'Editar Usuário';
     final Size screenSize = MediaQuery.of(context).size;
+
+    var fotoPerfil = this.user.image;
 
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Inserir usuário'),
+        title: Text(appBarText),
       ),
       body: Form(
         key: _formKey,
@@ -63,7 +98,7 @@ class _UserInsertState extends State<UserInsert>
                             child: new CircleAvatar(
                               radius: 80.0,
                               backgroundImage:
-                                  AssetImage('assets/img/male.png'),
+                                  fotoPerfil == null ? AssetImage('assets/img/male.png') : AssetImage(fotoPerfil),
                               backgroundColor: const Color(0xFF778899),
                             ),
                           ),
@@ -87,6 +122,7 @@ class _UserInsertState extends State<UserInsert>
             ),
             new TextField(
               keyboardType: TextInputType.text,
+              controller: txtName,
               decoration: new InputDecoration(
                   hintText: 'Qual o seu nome?',
                   labelText: 'Nome',
@@ -95,6 +131,7 @@ class _UserInsertState extends State<UserInsert>
             ),
             new TextField(
               keyboardType: TextInputType.emailAddress,
+              controller: txtEmail,
               decoration: new InputDecoration(
                   hintText: 'Qual o seu e-mail?',
                   labelText: 'E-mail',
@@ -103,6 +140,7 @@ class _UserInsertState extends State<UserInsert>
             ),
             new TextField(
               keyboardType: TextInputType.datetime,
+              controller: txtBirthDate,
               decoration: new InputDecoration(
                   hintText: 'Qual sua data de nascimento?',
                   labelText: 'Data de nascimento',
@@ -112,6 +150,7 @@ class _UserInsertState extends State<UserInsert>
             Divider(),
             new TextField(
               keyboardType: TextInputType.text,
+              controller: txtUserName,
               decoration: new InputDecoration(
                   hintText: 'Escolha um login para acessar o app',
                   labelText: 'Login',
@@ -119,6 +158,7 @@ class _UserInsertState extends State<UserInsert>
               onChanged: (v) => user.userName = v,
             ),
             new TextField(
+              controller: txtPassword,
               keyboardType: TextInputType.text,
               decoration: new InputDecoration(
                   hintText: 'Escolha uma senha para acessar o app',
@@ -150,15 +190,16 @@ class _UserInsertState extends State<UserInsert>
     setState(() {
       this._image = _image;
 
-      this.user.image = _image.path;
+      this.user.image = _image.absolute.path;
     });
   }
 
-  void submit() {
-    var apiService = new ApiService();
+  void submit() async {
+    if (this.userId == null)
+      await UserService().insert('api/person/insert', this.user.toMap());
+    else
+      await UserService().edit('api/person/edit', this.user.toMap());
 
-    apiService.post('/api/person/insert', user);
-
-    print(user.toJson());
+    Navigator.pop(context, [true]);
   }
 }

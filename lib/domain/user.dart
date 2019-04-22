@@ -18,7 +18,7 @@ class User {
         userName = json['userName'],
         image = json['image'];
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         'name': name,
         'email': email,
         'birthdate': birthdate,

@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:newflutterproject/domain/user.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:newflutterproject/pages/user/user-edit.dart';
-import 'package:newflutterproject/pages/user/user-insert.dart';
+import 'package:newflutterproject/pages/user/user-insert-edit.dart';
 import 'package:newflutterproject/pages/user/user-service.dart';
 
 class UserPage extends StatefulWidget {
@@ -15,82 +11,93 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   var users = List<dynamic>();
 
-  obterUsuarios() async {
+  @override
+  void initState() {
+    super.initState();
+    getUsers();
+  }
+
+  getUsers() async {
     var response = await UserService().get(
-        'api/person/list', {'search': null, 'pageSize': 5000, 'pageIndex': 1});
+        '/api/person/list', {'search': null, 'pageSize': 500, 'pageIndex': 1});
 
     setState(() {
-      Iterable list = json.decode(response);
-      users = list.map((model) => User.fromJson(model)).toList();
+      users = response.map((model) => User.fromJson(model)).toList();
     });
   }
 
-  initState() {
-    super.initState();
-    obterUsuarios();
-  }
+  deleteUser(int userId) async {
+    executeDelete() async {
+      await UserService().delete('api/person/delete', {'id': userId});
+      await getUsers();
+      Navigator.of(context).pop();
+    }
 
-  dispose() {
-    super.dispose();
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Delete user'),
+            content: Text('This action cannot be undone'),
+            actions: <Widget>[
+              new FlatButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: Text('Delete'),
+                textColor: Colors.red,
+                onPressed: () async {
+                  await executeDelete();
+                },
+              )
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      delegate: new SlidableDrawerDelegate(),
-      child: Container(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Usuários'),
-          ),
-          body: ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, int index) {
-              return new Dismissible(
-                key: new Key(users[index].name),
-                onDismissed: (direction) {
-                  excluir(users[index].id);
-                  Scaffold.of(context).showSnackBar(new SnackBar(
-                    content: new Text('Usuário deletado'),
-                  ));
-                },
-                background: new Container(
-                  color: Colors.red,
-                  child: Icon(
-                    Icons.delete,
-                    color: Colors.white,
-                  ),
-                ),
-                child: new ListTile(
-                    leading: Icon(Icons.person),
-                    title: new Text("${users[index].name}"),
-                    subtitle: new Text("${users[index].email}"),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  UserEdit(userId: users[index].id)));
-                    }),
-              );
+    return Scaffold(
+      appBar: AppBar(title: Text('Users')),
+      body: ListView.builder(
+        itemCount: users.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(users[index].name),
+            subtitle: Text(users[index].email),
+            trailing: IconButton(
+                icon: new Icon(Icons.delete),
+                color: Colors.red,
+                onPressed: () async {
+                  await deleteUser(users[index].id);
+                }),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          UserInsertEdit(userId: users[index].id))).then((val) {
+                if (val != null && val.isNotEmpty) getUsers();
+              });
             },
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => UserInsert()));
-            },
-            child: Icon(Icons.add),
-          ),
-        ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserInsertEdit(userId: null)))
+              .then((val) {
+            if (val != null && val.isNotEmpty) getUsers();
+          });
+        },
+        child: Icon(Icons.add),
       ),
     );
-  }
-
-  void excluir(int id) {
-    
-    //ApiService apiService = new ApiService();
-
-    //apiService.delete('/api/person/delete', user);
   }
 }
