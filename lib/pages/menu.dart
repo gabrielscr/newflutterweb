@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:boxicons_flutter/boxicons_flutter.dart';
 import 'package:newflutterproject/pages/produto/produto-page.dart';
-import 'package:newflutterproject/pages/user/user-page.dart';
+import 'package:newflutterproject/pages/user/user-list.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -53,7 +53,7 @@ class _MenuState extends State<Menu> {
             title: Text('Usuários'),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => UserPage()));
+                  context, MaterialPageRoute(builder: (context) => UserList()));
             },
           ),
           ListTile(
@@ -61,7 +61,7 @@ class _MenuState extends State<Menu> {
             title: Text('Configurações'),
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => UserPage()));
+                  context, MaterialPageRoute(builder: (context) => UserList()));
             },
           ),
         ],
