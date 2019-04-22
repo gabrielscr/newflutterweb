@@ -10,7 +10,7 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   var users = List<dynamic>();
-
+  var user = User();
   @override
   void initState() {
     super.initState();
@@ -66,6 +66,11 @@ class _UserPageState extends State<UserPage> {
         itemCount: users.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: users[index].image == null
+                  ? AssetImage('assets/img/male.png')
+                  : AssetImage(users[index].image),
+            ),
             title: Text(users[index].name),
             subtitle: Text(users[index].email),
             trailing: IconButton(
