@@ -11,7 +11,7 @@ class UserService {
     return await apiService.put(url, object);
   }
 
-  get(String url, Map query) async {
+  Future get(String url, Map query) async {
     return await apiService.get(url, query);
   }
 

@@ -1,7 +1,7 @@
 class User {
   int id;
   String name;
-  String birthdate;
+  String birthDate;
   String email;
   String password;
   String userName;
@@ -12,7 +12,7 @@ class User {
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         email = json['email'],
-        birthdate = json['birthdate'],
+        birthDate = json['birthDate'],
         id = json['id'],
         password = json['password'],
         userName = json['userName'],
@@ -21,7 +21,7 @@ class User {
   Map<String, dynamic> toMap() => {
         'name': name,
         'email': email,
-        'birthdate': birthdate,
+        'birthDate': birthDate,
         'id': id,
         'userName': userName,
         'password': password,

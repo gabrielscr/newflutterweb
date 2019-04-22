@@ -58,7 +58,7 @@ class _UserInsertEdit extends State<UserInsertEdit>
       userFromServer = User.fromJson(response);
       txtName.text = userFromServer.name;
       txtEmail.text = userFromServer.email;
-      txtBirthDate.text = userFromServer.birthdate;
+      txtBirthDate.text = userFromServer.birthDate;
       txtUserName.text = userFromServer.userName;
       txtPassword.text = userFromServer.password;
     }
@@ -145,7 +145,7 @@ class _UserInsertEdit extends State<UserInsertEdit>
                   hintText: 'Qual sua data de nascimento?',
                   labelText: 'Data de nascimento',
                   icon: Icon(Icons.date_range)),
-              onChanged: (v) => user.birthdate = v,
+              onChanged: (v) => user.birthDate = v,
             ),
             Divider(),
             new TextField(
