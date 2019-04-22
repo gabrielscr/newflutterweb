@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:newflutterproject/domain/user.dart';
 import 'package:newflutterproject/pages/user/user-insert-edit.dart';
 import 'package:newflutterproject/pages/user/user-service.dart';
@@ -24,7 +23,7 @@ class _UserListState extends State<UserList> {
   Future getUsers() async {
     List<dynamic> users = [];
     var response = await UserService().get(
-        '/api/person/list', {'search': null, 'pageSize': 500, 'pageIndex': 1});
+        '/api/person/list', {'search': null, 'pageSize': 1000, 'pageIndex': 1});
 
     if (mounted) {
       setState(() {
@@ -53,17 +52,17 @@ class _UserListState extends State<UserList> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Delete user'),
-            content: Text('This action cannot be undone'),
+            title: Text('Deseja realmente excluir?'),
+            content: Text('Esta ação não pode ser desfeita'),
             actions: <Widget>[
               new FlatButton(
-                child: Text('Close'),
+                child: Text('Fechar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               new FlatButton(
-                child: Text('Delete'),
+                child: Text('Excluir'),
                 textColor: Colors.red,
                 onPressed: () async {
                   await executeDelete();
@@ -80,7 +79,7 @@ class _UserListState extends State<UserList> {
       appBar: AppBar(title: Text('Usuários')),
       body: StreamBuilder(
           stream: _userController.stream,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.hasError) {
               return Text(snapshot.error);
             }
