@@ -59,7 +59,7 @@ class _UserInsertEdit extends State<UserInsertEdit>
       txtName.text = userFromServer.name;
       txtEmail.text = userFromServer.email;
       txtBirthDate.text = userFromServer.birthDate;
-      txtUserName.text = userFromServer.userName;
+      txtUserName.text = userFromServer.username;
       txtPassword.text = userFromServer.password;
     }
 
@@ -155,7 +155,7 @@ class _UserInsertEdit extends State<UserInsertEdit>
                   hintText: 'Escolha um login para acessar o app',
                   labelText: 'Login',
                   icon: Icon(Icons.person_pin)),
-              onChanged: (v) => user.userName = v,
+              onChanged: (v) => user.username = v,
             ),
             new TextField(
               controller: txtPassword,

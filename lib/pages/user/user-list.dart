@@ -9,23 +9,16 @@ class UserList extends StatefulWidget {
 }
 
 class _UserListState extends State<UserList> {
-  var users = List<dynamic>();
-
-  var user = User();
-  @override
-  void initState() {
-    super.initState();
-
-    getUsers();
-  }
-
   getUsers() async {
+    List<dynamic> users = [];
     var response = await UserService().get(
         '/api/person/list', {'search': null, 'pageSize': 500, 'pageIndex': 1});
 
     setState(() {
       users = response.map((model) => User.fromJson(model)).toList();
     });
+
+    return users;
   }
 
   deleteUser(int userId) async {
@@ -64,7 +57,49 @@ class _UserListState extends State<UserList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Usuários')),
-      body: listUsers(),
+      body: Container(
+          child: FutureBuilder(
+              future: getUsers(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  return Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: snapshot.data[index].image == null
+                              ? AssetImage('assets/img/male.png')
+                              : AssetImage(snapshot.data[index].image),
+                        ),
+                        title: Text(snapshot.data[index].name),
+                        subtitle: Text(snapshot.data[index].email),
+                        trailing: IconButton(
+                            icon: new Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () async {
+                              await deleteUser(snapshot.data[index].id);
+                            }),
+                        onTap: () {
+                          Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UserInsertEdit(
+                                          userId: snapshot.data[index].id)))
+                              .then((val) {
+                            if (val != null && val.isNotEmpty) getUsers();
+                          });
+                        },
+                      );
+                    },
+                  );
+                }
+              })),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -77,38 +112,6 @@ class _UserListState extends State<UserList> {
         },
         child: Icon(Icons.add),
       ),
-    );
-  }
-
-  Widget listUsers() {
-    return ListView.builder(
-      itemCount: users.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundImage: users[index].image == null
-                ? AssetImage('assets/img/male.png')
-                : AssetImage(users[index].image),
-          ),
-          title: Text(users[index].name),
-          subtitle: Text(users[index].email),
-          trailing: IconButton(
-              icon: new Icon(Icons.delete),
-              color: Colors.red,
-              onPressed: () async {
-                await deleteUser(users[index].id);
-              }),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        UserInsertEdit(userId: users[index].id))).then((val) {
-              if (val != null && val.isNotEmpty) getUsers();
-            });
-          },
-        );
-      },
     );
   }
 }

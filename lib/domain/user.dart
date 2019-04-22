@@ -4,7 +4,7 @@ class User {
   String birthDate;
   String email;
   String password;
-  String userName;
+  String username;
   String image;
 
   User();
@@ -15,7 +15,7 @@ class User {
         birthDate = json['birthDate'],
         id = json['id'],
         password = json['password'],
-        userName = json['userName'],
+        username = json['username'],
         image = json['image'];
 
   Map<String, dynamic> toMap() => {
@@ -23,7 +23,7 @@ class User {
         'email': email,
         'birthDate': birthDate,
         'id': id,
-        'userName': userName,
+        'username': username,
         'password': password,
         'image': image
       };
