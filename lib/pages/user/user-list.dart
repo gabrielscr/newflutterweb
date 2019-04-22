@@ -14,9 +14,11 @@ class _UserListState extends State<UserList> {
     var response = await UserService().get(
         '/api/person/list', {'search': null, 'pageSize': 500, 'pageIndex': 1});
 
-    setState(() {
-      users = response.map((model) => User.fromJson(model)).toList();
-    });
+    if (this.mounted) {
+      setState(() {
+        users = response.map((model) => User.fromJson(model)).toList();
+      });
+    }
 
     return users;
   }
