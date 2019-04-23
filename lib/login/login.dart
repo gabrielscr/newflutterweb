@@ -1,75 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:newflutterproject/main.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:newflutterproject/login/login-card.dart';
+import 'package:newflutterproject/pages/menu.dart';
 
 class Login extends StatefulWidget {
   @override
-  _LoginState createState() => _LoginState();
+  LoginState createState() => new LoginState();
 }
 
-class _LoginState extends State<Login> {
+class LoginState extends State<Login> {
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: new BoxDecoration(color: Colors.black),
-        child: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance =
+        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+    return new Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomPadding: true,
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              SizedBox(height: 120.0),
-              Column(
-                children: <Widget>[
-                  SizedBox(height: 16.0),
-                  new CircleAvatar(
-                    backgroundImage: AssetImage('assets/img/admin.png'),
-                    radius: 80,
-                  )
-                ],
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+               // child: Image.asset("assets/image_01.png"),
               ),
-              SizedBox(height: 50.0),
-              TextField(
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(
-                    Icons.person_outline,
-                    color: Colors.white,
-                  ),
-                  filled: true,
-                  labelText: 'Usuário',
-                ),
+              Expanded(
+                child: Container(),
               ),
-              SizedBox(
-                height: 12.0,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(
-                    Icons.enhanced_encryption,
-                    color: Colors.white,
-                  ),
-                  filled: true,
-                  labelText: 'Senha',
-                ),
-                obscureText: true,
-              ),
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text('Logar'),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MainPage()));
-                    },
-                  )
-                ],
-              )
+              //Image.asset("assets/image_02.png")
             ],
           ),
-        ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      // Image.asset(
+                      //   "assets/logo.png",
+                      //   width: ScreenUtil.getInstance().setWidth(110),
+                      //   height: ScreenUtil.getInstance().setHeight(110),
+                      // ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: ScreenUtil.getInstance().setHeight(300),
+                  ),
+                  LoginCard(),
+                  SizedBox(
+                    height: ScreenUtil.getInstance().setHeight(40),
+                  ),
+                RaisedButton(
+                  color: Colors.white,
+                  child: Text('LOGAR'),
+                  onPressed: (){
+                    Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Menu()));
+                  },
+                )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
