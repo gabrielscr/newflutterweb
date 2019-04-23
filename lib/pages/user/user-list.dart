@@ -99,7 +99,7 @@ class _UserListState extends State<UserList> {
                           ? AssetImage('assets/img/male.png')
                           : AssetImage(snapshot.data[index].profileImage),
                     ),
-                    title: Text(snapshot.data[index].name),
+                    title: Text(snapshot.data[index].name + ' ' + snapshot.data[index].lastName),
                     subtitle: Text(snapshot.data[index].email),
                     trailing: IconButton(
                         icon: new Icon(Icons.delete),

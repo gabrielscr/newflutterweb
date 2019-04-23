@@ -113,8 +113,6 @@ class _UserInsertEdit extends State<UserInsertEdit>
                       children: <Widget>[
                         new Center(
                           child: new CircleAvatar(
-                            child: Text('Foto',
-                                style: TextStyle(color: Colors.black)),
                             radius: 80.0,
                             backgroundImage: fotoPerfil == null
                                 ? AssetImage('assets/img/male.png')
@@ -215,7 +213,11 @@ class _UserInsertEdit extends State<UserInsertEdit>
     setState(() {
       this._image = _image;
 
-      this.user.profileImage = _image.absolute.path;
+      if (_image == null) {
+        return;
+      } else {
+        this.user.profileImage = _image.absolute.path;
+      }
     });
   }
 
