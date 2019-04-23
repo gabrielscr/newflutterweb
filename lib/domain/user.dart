@@ -1,30 +1,39 @@
 class User {
   int id;
   String name;
-  String birthDate;
+  String lastName;
+  String age;
   String email;
   String password;
-  String username;
-  String image;
+  String userLogin;
+  String profileImage;
+  String gender;
+  bool active;
 
   User();
 
   User.fromJson(Map<String, dynamic> json)
       : name = json['name'],
+        lastName = json['lastName'],
         email = json['email'],
-        birthDate = json['birthDate'],
+        age = json['age'],
         id = json['id'],
         password = json['password'],
-        username = json['username'],
-        image = json['image'];
+        userLogin = json['userLogin'],
+        gender = json['gender'],
+        profileImage = json['profileImage'],
+        active = json['active'];
 
   Map<String, dynamic> toMap() => {
         'name': name,
+        'lastName': lastName,
         'email': email,
-        'birthDate': birthDate,
+        'age': age,
         'id': id,
-        'username': username,
+        'userLogin': userLogin,
         'password': password,
-        'image': image
+        'profileImage': profileImage,
+        'active': active,
+        'gender' : gender
       };
 }

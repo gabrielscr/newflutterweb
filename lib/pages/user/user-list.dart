@@ -23,7 +23,7 @@ class _UserListState extends State<UserList> {
   Future getUsers() async {
     List<dynamic> users = [];
     var response = await UserService().get(
-        '/api/person/list', {'search': null, 'pageSize': 1000, 'pageIndex': 1});
+        '/api/user/list', {'search': null, 'pageSize': 1000, 'pageIndex': 1});
 
     if (mounted) {
       setState(() {
@@ -43,7 +43,7 @@ class _UserListState extends State<UserList> {
 
   deleteUser(int userId) async {
     executeDelete() async {
-      await UserService().delete('api/person/delete', {'id': userId});
+      await UserService().delete('api/user/delete', {'id': userId});
       await loadUsers();
       Navigator.of(context).pop();
     }
@@ -95,9 +95,9 @@ class _UserListState extends State<UserList> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundImage: snapshot.data[index].image == null
+                      backgroundImage: snapshot.data[index].profileImage == null
                           ? AssetImage('assets/img/male.png')
-                          : AssetImage(snapshot.data[index].image),
+                          : AssetImage(snapshot.data[index].profileImage),
                     ),
                     title: Text(snapshot.data[index].name),
                     subtitle: Text(snapshot.data[index].email),
