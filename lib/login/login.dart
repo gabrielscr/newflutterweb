@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newflutterproject/login/login-card.dart';
-import 'package:newflutterproject/pages/menu.dart';
+
+import '../main.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -18,56 +19,55 @@ class LoginState extends State<Login> {
     return new Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: true,
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 20.0),
-               // child: Image.asset("assets/image_01.png"),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              //Image.asset("assets/image_02.png")
-            ],
-          ),
-          SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      // Image.asset(
-                      //   "assets/logo.png",
-                      //   width: ScreenUtil.getInstance().setWidth(110),
-                      //   height: ScreenUtil.getInstance().setHeight(110),
-                      // ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(300),
-                  ),
-                  LoginCard(),
-                  SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(40),
-                  ),
-                RaisedButton(
-                  color: Colors.white,
-                  child: Text('LOGAR'),
-                  onPressed: (){
-                    Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Menu()));
-                  },
-                )
-                ],
-              ),
-            ),
+      body: Container(
+        decoration: new BoxDecoration(
+          image: new DecorationImage(
+            image: new AssetImage('assets/img/fundo.png'),
+            fit: BoxFit.cover,
           )
-        ],
+        ),
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                 //child: Image.asset("assets/img/image_01.png"),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Image.asset("assets/img/image_02.png")
+              ],
+            ),
+            SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 60.0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: ScreenUtil.getInstance().setHeight(300),
+                    ),
+                    LoginCard(),
+                    SizedBox(
+                      height: ScreenUtil.getInstance().setHeight(40),
+                    ),
+                  RaisedButton(
+                    color: Colors.white,
+                    child: Text('LOGAR'),
+                    onPressed: (){
+                      Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MainPage()));
+                    },
+                  )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
