@@ -37,9 +37,14 @@ class LoginCard extends StatelessWidget {
                 style: TextStyle(
                     fontFamily: "Poppins-Medium",
                     fontSize: ScreenUtil.getInstance().setSp(26))),
-            TextField(
+            TextFormField(
               decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              validator: (v) {
+                if (v.isEmpty) {
+                  return 'Digite o seu usuário';
+                }
+              },
             ),
             SizedBox(
               height: ScreenUtil.getInstance().setHeight(30),
@@ -48,10 +53,15 @@ class LoginCard extends StatelessWidget {
                 style: TextStyle(
                     fontFamily: "Poppins-Medium",
                     fontSize: ScreenUtil.getInstance().setSp(26))),
-            TextField(
+            TextFormField(
               obscureText: true,
               decoration: InputDecoration(
                   hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              validator: (v) {
+                if (v.isEmpty) {
+                  return 'Digite a sua senha';
+                }
+              },
             ),
             SizedBox(
               height: ScreenUtil.getInstance().setHeight(35),

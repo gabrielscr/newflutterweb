@@ -3,12 +3,12 @@ import 'package:newflutterproject/common/api-service.dart';
 class UserService {
   final apiService = ApiService();
 
-  insert(String url, Object object) async {
-    return await apiService.post(url, object);
+  insert(String url, Map body) async {
+    return await apiService.post(url, body);
   }
-
-  edit(String url, Object object) async {
-    return await apiService.put(url, object);
+  
+  edit(String url, Map body) async {
+    return await apiService.put(url, body);
   }
 
   Future get(String url, Map query) async {

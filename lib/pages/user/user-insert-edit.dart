@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:newflutterproject/common/handle-change.dart';
 import 'package:newflutterproject/domain/user.dart';
 import 'package:newflutterproject/pages/image/image-handler.dart';
+import 'package:newflutterproject/pages/user/user-list.dart';
 import 'package:newflutterproject/pages/user/user-service.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class UserInsertEdit extends StatefulWidget {
   final int userId;
@@ -16,30 +20,26 @@ class UserInsertEdit extends StatefulWidget {
 class _UserInsertEdit extends State<UserInsertEdit>
     with TickerProviderStateMixin, ImagePickerListener {
   final int userId;
-  bool _saving = false;
 
   var user = User();
 
-  var txtName = new TextEditingController();
-  var txtEmail = new TextEditingController();
-  var txtAge = new TextEditingController();
-  var txtUserName = new TextEditingController();
-  var txtPassword = new TextEditingController();
-  var txtLastName = new TextEditingController();
-  var chkGender = new TextEditingController();
-  var tgActive = new TextEditingController();
-
   File _image;
   AnimationController _controller;
+  Animation _animation;
   ImagePickerHandler imagePicker;
 
   @override
   void initState() {
     super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) => getUser());
     _controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    _animation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(_controller);
 
     imagePicker = new ImagePickerHandler(this, _controller);
     imagePicker.init();
@@ -61,14 +61,7 @@ class _UserInsertEdit extends State<UserInsertEdit>
       var response =
           await UserService().get('/api/user/get', {'id': this.userId});
       userFromServer = User.fromJson(response);
-      txtName.text = userFromServer.name;
-      txtEmail.text = userFromServer.email;
-      txtAge.text = userFromServer.age;
-      txtUserName.text = userFromServer.userLogin;
-      txtPassword.text = userFromServer.password;
-      txtLastName.text = userFromServer.lastName;
-      chkGender.text = userFromServer.gender;
-      tgActive.value = userFromServer.active as TextEditingValue;
+      handleChange.setValue(userFromServer.toMap());
     }
 
     if (mounted) {
@@ -81,129 +74,148 @@ class _UserInsertEdit extends State<UserInsertEdit>
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
+  var handleChange = HandleChange();
+
   @override
   Widget build(BuildContext context) {
     var appBarText = this.userId == null ? 'Inserir Usuário' : 'Editar Usuário';
-
+    _controller.forward();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(appBarText),
       ),
-      body: ModalProgressHUD(inAsyncCall: _saving, child: renderForm()),
+      body: Container(
+        child: renderForm(),
+      ),
     );
   }
 
   Widget renderForm() {
     var fotoPerfil = this.user.profileImage;
 
-    return Form(
-      key: _formKey,
-      autovalidate: true,
-      child: new ListView(
-        children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          new GestureDetector(
-            onTap: () => imagePicker.showDialog(context),
-            child: new Center(
-              child: _image == null
-                  ? new Stack(
-                      children: <Widget>[
-                        new Center(
-                          child: new CircleAvatar(
-                            radius: 80.0,
-                            backgroundImage: fotoPerfil == null
-                                ? AssetImage('assets/img/male.png')
-                                : AssetImage(fotoPerfil),
-                            backgroundColor: const Color(0xFF778899),
-                          ),
-                        ),
-                      ],
-                    )
-                  : new Container(
-                      height: 160.0,
-                      width: 160.0,
-                      decoration: new BoxDecoration(
-                        color: const Color(0xff7c94b6),
-                        image: new DecorationImage(
-                          image: new ExactAssetImage(_image.path),
-                          fit: BoxFit.cover,
-                        ),
-                        border: Border.all(color: Colors.red, width: 5.0),
-                        borderRadius:
-                            new BorderRadius.all(const Radius.circular(80.0)),
-                      ),
-                    ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 30.0),
+      child: Form(
+        key: _formKey,
+        autovalidate: true,
+        child: new ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 20,
             ),
-          ),
-          new TextField(
-            keyboardType: TextInputType.text,
-            controller: txtName,
-            decoration: new InputDecoration(
-                labelText: 'Nome', icon: Icon(Icons.person)),
-            onChanged: (v) => user.name = v,
-          ),
-          new TextField(
-            keyboardType: TextInputType.text,
-            controller: txtLastName,
-            decoration: new InputDecoration(
-                labelText: 'Último nome', icon: Icon(Icons.person)),
-            onChanged: (v) => user.lastName = v,
-          ),
-          new TextField(
-            keyboardType: TextInputType.emailAddress,
-            controller: txtEmail,
-            decoration: new InputDecoration(
-                labelText: 'E-mail', icon: Icon(Icons.email)),
-            onChanged: (v) => user.email = v,
-          ),
-          new TextField(
-            keyboardType: TextInputType.datetime,
-            controller: txtAge,
-            decoration: new InputDecoration(
-                labelText: 'Idade', icon: Icon(Icons.date_range)),
-            onChanged: (v) => user.age = v,
-          ),
-          Divider(
-            indent: 10,
-          ),
-          new TextField(
-            keyboardType: TextInputType.text,
-            controller: txtUserName,
-            decoration: new InputDecoration(
-                labelText: 'Login', icon: Icon(Icons.person_pin)),
-            onChanged: (v) => user.userLogin = v,
-          ),
-          new TextField(
-            controller: txtPassword,
-            keyboardType: TextInputType.text,
-            decoration: new InputDecoration(
-                labelText: 'Senha', icon: Icon(Icons.enhanced_encryption)),
-            onChanged: (v) => user.password = v,
-            obscureText: true,
-          ),
-          new ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new RaisedButton(
-                child: new Text(
-                  'Inserir',
-                  style: new TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  submit();
-                },
-                color: Colors.blue,
+            new GestureDetector(
+              onTap: () => imagePicker.showDialog(context),
+              child: new Center(
+                child: _image == null
+                    ? new Stack(
+                        children: <Widget>[
+                          new Center(
+                            child: FadeTransition(
+                              opacity: _animation,
+                              child: new CircleAvatar(
+                                radius: 80.0,
+                                backgroundImage: fotoPerfil == null
+                                    ? AssetImage('assets/img/male.png')
+                                    : AssetImage(fotoPerfil),
+                                backgroundColor: const Color(0xFF778899),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : new Container(
+                        height: 160.0,
+                        width: 160.0,
+                        decoration: new BoxDecoration(
+                          color: const Color(0xff7c94b6),
+                          image: new DecorationImage(
+                            image: new ExactAssetImage(_image.path),
+                            fit: BoxFit.cover,
+                          ),
+                          border: Border.all(color: Colors.red, width: 5.0),
+                          borderRadius:
+                              new BorderRadius.all(const Radius.circular(80.0)),
+                        ),
+                      ),
               ),
-              new FlatButton(
-                onPressed: () {},
-                child: new Text('Voltar'),
-              )
-            ],
-          )
-        ],
+            ),
+            new TextField(
+              keyboardType: TextInputType.text,
+              controller: handleChange.add('name'),
+              enabled: handleChange.addDisabled('name'),
+              decoration: new InputDecoration(
+                  labelText: 'Nome', icon: Icon(Icons.person)),
+              onChanged: (v) => user.name = v,
+            ),
+            new TextField(
+              keyboardType: TextInputType.text,
+              controller: handleChange.add('lastName'),
+              enabled: handleChange.addDisabled('lastName'),
+              decoration: new InputDecoration(
+                  labelText: 'Último nome', icon: Icon(Icons.person)),
+              onChanged: (v) => user.lastName = v,
+            ),
+            new TextField(
+              keyboardType: TextInputType.emailAddress,
+              controller: handleChange.add('email'),
+              decoration: new InputDecoration(
+                  labelText: 'E-mail', icon: Icon(Icons.email)),
+              onChanged: (v) => user.email = v,
+            ),
+            new TextField(
+              keyboardType: TextInputType.datetime,
+              enabled: handleChange.addDisabled('birthdate'),
+              controller: handleChange.add('birthdate'),
+              decoration: InputDecoration(
+                  labelText: 'Data de nascimento',
+                  icon: Icon(Icons.date_range)),
+              onChanged: (v) => user.birthdate = v,
+            ),
+            Divider(
+              indent: 10,
+            ),
+            new TextField(
+              keyboardType: TextInputType.text,
+              enabled: handleChange.addDisabled('userLogin'),
+              controller: handleChange.add('userLogin'),
+              decoration: new InputDecoration(
+                  labelText: 'Login', icon: Icon(Icons.person_pin)),
+              onChanged: (v) => user.userLogin = v,
+            ),
+            new TextField(
+              controller: handleChange.add('password'),
+              enabled: handleChange.addDisabled('password'),
+              keyboardType: TextInputType.text,
+              decoration: new InputDecoration(
+                  labelText: 'Senha', icon: Icon(Icons.enhanced_encryption)),
+              onChanged: (v) => user.password = v,
+              obscureText: true,
+            ),
+            new ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new FlatButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => UserList()));
+                  },
+                  child: new Text('Voltar'),
+                ),
+                new RaisedButton(
+                  child: new Text(
+                    'Inserir',
+                    style: new TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    submit();
+                  },
+                  color: Colors.blue,
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -222,22 +234,6 @@ class _UserInsertEdit extends State<UserInsertEdit>
   }
 
   void submit() async {
-    setState(() {
-      _saving = true;
-    });
-
-    //Simulate a service call
-    SnackBar(
-      content: Text('Enviando dados para o servidor...'),
-    );
-    new Future.delayed(new Duration(seconds: 4), () {
-      if (mounted) {
-        setState(() {
-          _saving = false;
-        });
-      }
-    });
-
     if (this.userId == null)
       await UserService().insert('api/user/insert', this.user.toMap());
     else

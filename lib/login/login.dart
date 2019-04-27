@@ -10,7 +10,6 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
@@ -21,11 +20,10 @@ class LoginState extends State<Login> {
       resizeToAvoidBottomPadding: true,
       body: Container(
         decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage('assets/img/fundo.png'),
-            fit: BoxFit.cover,
-          )
-        ),
+            image: new DecorationImage(
+          image: new AssetImage('assets/img/fundo.png'),
+          fit: BoxFit.cover,
+        )),
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -34,7 +32,7 @@ class LoginState extends State<Login> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 20.0),
-                 //child: Image.asset("assets/img/image_01.png"),
+                  //child: Image.asset("assets/img/image_01.png"),
                 ),
                 Expanded(
                   child: Container(),
@@ -54,14 +52,16 @@ class LoginState extends State<Login> {
                     SizedBox(
                       height: ScreenUtil.getInstance().setHeight(40),
                     ),
-                  RaisedButton(
-                    color: Colors.white,
-                    child: Text('LOGAR'),
-                    onPressed: (){
-                      Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MainPage()));
-                    },
-                  )
+                    FlatButton(
+                      color: Colors.white,
+                      child: Text('LOGAR'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage()));
+                      },
+                    )
                   ],
                 ),
               ),

@@ -2,7 +2,7 @@ class User {
   int id;
   String name;
   String lastName;
-  String age;
+  String birthdate;
   String email;
   String password;
   String userLogin;
@@ -16,7 +16,7 @@ class User {
       : name = json['name'],
         lastName = json['lastName'],
         email = json['email'],
-        age = json['age'],
+        birthdate = json['birthdate'],
         id = json['id'],
         password = json['password'],
         userLogin = json['userLogin'],
@@ -28,7 +28,7 @@ class User {
         'name': name,
         'lastName': lastName,
         'email': email,
-        'age': age,
+        'birthdate': birthdate,
         'id': id,
         'userLogin': userLogin,
         'password': password,
