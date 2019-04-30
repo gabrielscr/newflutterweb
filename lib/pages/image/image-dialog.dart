@@ -71,65 +71,26 @@ class ImagePickerDialog extends StatelessWidget {
         type: MaterialType.transparency,
         child: new Opacity(
           opacity: 1.0,
-          child: new Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                new GestureDetector(
-                    onTap: () => _listener.openCamera(),
-                    child: roundedButton(
-                        'Câmera',
-                        EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
-                        Colors.black,
-                        Colors.white)),
-                new GestureDetector(
-                    onTap: () => _listener.openGallery(),
-                    child: roundedButton(
-                        'Galeria',
-                        EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
-                        Colors.black,
-                        Colors.white)),
-                const SizedBox(height: 15.0),
-                new GestureDetector(
-                  onTap: () => dismissDialog(),
-                  child: new Padding(
-                    padding: EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-                    child: roundedButton(
-                        'Voltar',
-                        EdgeInsets.fromLTRB(100.0, 10.0, 100.0, 0.0),
-                        Colors.black,
-                        Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: new Dialog(
+              child: Wrap(
+            children: <Widget>[
+              new IconButton(
+                iconSize: 30,
+                onPressed: () => _listener.openCamera(),
+                icon: Icon(Icons.camera_alt),
+              ),
+              new IconButton(
+                iconSize: 30,
+                onPressed: () => _listener.openGallery(),
+                icon: Icon(Icons.photo_album),
+              ),
+              new IconButton(
+                iconSize: 30,
+                onPressed: () => dismissDialog(),
+                icon: Icon(Icons.close),
+              )
+            ],
+          )),
         ));
-  }
-
-  Widget roundedButton(
-      String buttonLabel, EdgeInsets margin, Color bgColor, Color textColor) {
-    var button = new Container(
-      margin: margin,
-      padding: EdgeInsets.all(15.0),
-      alignment: FractionalOffset.center,
-      decoration: new BoxDecoration(
-        color: bgColor,
-        borderRadius: new BorderRadius.all(const Radius.circular(10.0)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: const Color(0xFF696969),
-            offset: Offset(1.0, 6.0),
-            blurRadius: 0.001,
-          ),
-        ],
-      ),
-      child: Text(
-        buttonLabel,
-        style: new TextStyle(color: textColor, fontSize: 12.0),
-      ),
-    );
-    return button;
   }
 }
